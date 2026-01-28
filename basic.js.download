@@ -1,0 +1,274 @@
+// JavaScript Document
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+
+
+
+
+function ShowTimeoutWarning() {
+	if (window.isAlertShowing === true) return;
+	else window.isAlertShowing = true;
+    alert('Your session is about to expire to protect the privacy of your data..');
+    window.isAlertShowing = false;
+    window.location.reload(true);
+}
+
+function ShowLogoutWarning() {
+	if (window.isAlertShowing === true) return;
+	else window.isAlertShowing = true;
+    alert('You are about to be logged out to protect the privacy of your data.');
+    window.isAlertShowing = false;
+    window.location.reload(true);
+}
+
+function ShowExitPopup(event) {
+
+	if (!event) event = window.event;
+	var ie = navigator.userAgent.toLowerCase().indexOf('msie') >= 0;
+	var ie7 = ie && (typeof document.body.style.maxHeight != "undefined");
+	var ie6 = ie && !ie7;
+	
+	if ((ie6 && window.screenTop > 9000) || (ie7 && (event.clientX < 0 || event.clientY < 0)) || (!window.event && !event.target)) {
+		exitWindow = window.open(ExitPopupUrl,"ExitPopup","toolbar=no,location=no,status=no,menubar=no,resizable=no,scrollbars=yes,width=800,height=350,left=100,top=100");
+		self.opener = this;
+	}	
+}
+
+function getTableElementsByName(name) {
+	
+	// check whether easily found
+	var elements = document.getElementsByName(name);
+	if (elements.length > 0) return elements;
+	
+	// otherwise find tags manually
+	var tags = document.getElementsByTagName('tr');
+	var list = new Array();
+	
+	// check attributes on each tag
+	for(i=0; i<tags.length; i++) {
+		if (tags[i].getAttribute("name") == name) {
+			list.push(tags[i]);
+		}
+	}
+	
+	// return value
+	return list;
+
+}
+
+function SetTarget(newWindow) {
+	try {
+		var form = document.forms[0];
+		if (newWindow) setTimeout('SetTarget(false)', 500);
+		if (newWindow) form.target = "_blank";
+		else form.target = "_self";
+	} catch (e) { ; }
+}
+
+function SetTargetAndValidate(newWindow) {
+	try {
+		SetTarget(newWindow); 
+		if (!ValidatorOnSubmit()) {
+			return false; 
+		}
+	} catch (e) { ; }
+}
+
+String.prototype.trim = function () {
+   return this.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+
+String.prototype.replaceAll = function(fromValue, toValue) {
+	value = this;
+	while (value.indexOf(fromValue) >= 0) {
+		value = value.replace(fromValue, toValue);
+	}
+	return value;
+}
+
+// Returns the value of the cookie.
+function getCookie(cookieName) {
+
+	// get all document cookies
+	var cookies = document.cookie.split(';');
+	
+	// look for the chosen cookie
+	for (i=0; i<cookies.length; i++) {
+		var theCookie = cookies[i].split('=');
+		if (theCookie[0].trim() != cookieName) continue;
+		if (theCookie.length <= 1) return null;
+		return theCookie[1].trim();
+	}
+	
+	// return value
+	return null;
+}
+
+// Sets the value of the cookie.
+function setCookie(cookieName, cookieValue, expires) {
+	var strCookie = cookieName + "=" + escape(cookieValue);
+	if (expires) strCookie += ";expires=" + (new Date(new Date().getTime() + expires * 3600000).toGMTString());
+	document.cookie = strCookie;			
+}
+
+// Deletes the cookie.
+function deleteCookie(cookieName) {
+	if (getCookie(cookieName)) {
+		var strCookie = cookieName + "=;expires=Sat, 01-Jan-2000 00:00:00 GMT";
+		document.cookie = strCookie;
+	}
+}
+
+// Displays a message that only appears once.
+function ShowAlert(Message, MessageID) {
+	try {
+		if (MessageID && getCookie(MessageID)) return;
+		if (MessageID) setCookie(MessageID, true, 1);
+		alert(Message);
+	} catch (e) { ; }
+}
+
+
+
+function PopUpLoader(pageUrl, win_width, win_height) {
+	handle = window.open(reformatUrl(pageUrl),"handle","toolbar=no,location=no,status=yes,menubar=no,resizable=yes,scrollbars=yes,width=" + win_width + ",height=" + win_height + ",left=300,top=100");
+	if (handle) handle.focus();
+	self.opener = this;
+}
+function CenterPopup(pageUrl, win_width, win_height) {
+	var left = (screen.availWidth - win_width) >>1;
+	var top = (screen.availHeight - win_height) >>1;
+	handle = window.open(reformatUrl(pageUrl),"handle","toolbar=no,location=no,status=yes,menubar=no,resizable=yes,scrollbars=yes,width=" + win_width + ",height=" + win_height + ",left=" + left + ",top=" + top);
+	if (handle) handle.focus();
+	self.opener = this;
+}
+function reformatUrl(pageUrl) {
+	if (window.PopupToken === undefined) return pageUrl;
+	pageUrl += (pageUrl.indexOf('?') < 0) ? '?' : '&';
+	pageUrl += window.PopupToken;
+	return pageUrl;
+}
+function size_helpframe() {
+	var helpIFrame = document.getElementById('helpIFrame');
+	var interviewQuesTable = window.document.getElementById("interviewQuesTable");
+	var helptext = document.getElementById('help-text');
+
+	if (helpIFrame == null) helpIFrame = document.getElementById('ctl00_ctl00_ctl00_SiteMasterBody_ContentPlaceHolder1_ContentPlaceHolder1_helpIFrame');
+	if (helpIFrame == null) helpIFrame = document.getElementById('ctl00_ctl00_ctl00_SiteMasterBody_ContentPlaceHolder1_ContentPlaceHolder1_interview_helpIFrame');
+	if (helpIFrame && interviewQuesTable) helpIFrame.height = (interviewQuesTable.clientHeight - 2) + 45;
+	if (helptext && interviewQuesTable) helptext.height = (interviewQuesTable.clientHeight - 2) + 45;
+	return true;
+}
+
+function KeepAlive(url) {
+	try {
+	    var img = new Image(1, 1);
+	    if (url == undefined) {
+	        img.src = '/keep-alive.aspx?id=' + escape(new Date());
+	    } else {
+	        img.src = url+'?id=' + escape(new Date());
+	    }
+        
+	} catch (e) {
+		alert(e.message);
+	}
+}
+
+// Sets the window to a specified client size.
+function setClientSize(width, height) {
+    try {
+
+        // check whether Firefox
+        if (window.innerWidth) {
+            window.innerWidth = width;
+            window.innerHeight = height;
+            return;
+        }
+
+        // check whether Internet Explorer
+        window.resizeTo(width + 37, height + 92);
+        var currentWidth = document.documentElement.clientWidth;
+        var currentHeight = document.documentElement.clientHeight;
+        window.resizeBy(width - currentWidth, height - currentHeight);
+
+    } catch (e) {; }
+}
+
+// Resets all the fields
+function resetAllFields() {
+    try {
+
+        // find all the input fields
+        var textBoxes = document.getElementsByTagName('input');
+        var dropDowns = document.getElementsByTagName('select');
+
+        // reset their values
+        for (i = 0; i < textBoxes.length; i++) {
+            if (textBoxes[i].type == 'text') textBoxes[i].value = '';
+        }
+
+        // reset their values
+        for (i = 0; i < dropDowns.length; i++) {
+            dropDowns[i].selectedIndex = 0;
+        }
+
+    } catch (e) { ; }
+}
+
+// returns the number as a nicely currency formatted string
+Number.prototype.toCurrency = function() {
+    var number = Math.abs(this).toFixed(2).toString();
+    var sign = (this == Math.abs(this));
+
+    var iniLength = number.length - 3;
+    for (var i = 0; i < Math.floor((number.length - 3) / 4); i++) {
+        number = number.substr(0, (number.length - 3) - (4 * i + 3)) + ',' + number.substr((number.length - 3) - (4 * i + 3));
+    }
+    return ((sign) ? '' : '-') + '$' + number;
+}
+
+// sets all the check boxes to the given state
+function tableSelectAll(tableName, checked) {
+
+	// find all the check boxes
+	var table = document.getElementById(tableName);
+	var chkBoxes = table.getElementsByTagName('input');
+
+	// then select each one
+	for (i = 0; i < chkBoxes.length; i++) {
+		if (chkBoxes[i].type.toLowerCase() != 'checkbox') continue;
+		chkBoxes[i].checked = checked;
+	}
+
+}
+
+function MM_openBrWindow(theURL, winName, features) { //v2.0
+    window.open(theURL, winName, features);
+}
+
+// Closes telerik modal window by redirecting the page to the parent url, it avoids Safari and Chrome chrashing
+function gotoToParentUrl() {
+    try {
+        if (window != window.top) window.top.location = window.top.location;
+    } catch (e) { ; }
+}
